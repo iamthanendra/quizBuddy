@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="question_list.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus&family=Lilita+One&display=swap" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"> 
+
+    </head>
+    <body  style="background-image:url('brain.png'); background-repeat: no-repeat; background-attachment: fixed;background-position: center; ">
+        <script type="text/javascript" src="questionlist.js">
+
+
+        </script>
+        <script type="text/javascript">
+            var x = 0;
+            var answer = "";
+            var score = 0;
+        </script>
+
+        <script>
+            function startGame()
+            {
+                document.getElementById("LandingPage").style.display = "none";
+                document.getElementById("QuestionWrapper").style.display = "block";
+                document.getElementById("QuesPage").style.display = "initial"
+                t(x);
+            }
+            function t(i){
+                const myObj = JSON.parse(myJSON);
+                document.getElementById("question").innerHTML = myObj.question[i];
+                document.getElementById("option1").innerHTML = myObj.option1[i];
+                document.getElementById("option1_col").value = myObj.option1[i];
+                document.getElementById("option2").innerHTML = myObj.option2[i];
+                document.getElementById("option2_col").value = myObj.option2[i];
+                document.getElementById("option3").innerHTML = myObj.option3[i];
+                document.getElementById("option3_col").value = myObj.option3[i];
+                document.getElementById("option4").innerHTML = myObj.option4[i];
+                document.getElementById("option4_col").value = myObj.option4[i];
+
+                answer  = myObj.answer[i];
+            }
+            function checkAnswer(x)
+            {
+                var userAnswer = document.querySelector("input[name='option']:checked").value;
+                if(userAnswer.toString().toUpperCase() == answer.toString().toUpperCase())
+                { 
+                    document.getElementById("answer_img").src ="right.png";
+                    document.getElementById("userMsg").innerHTML = "Right Answer";
+                    score++;
+                }
+                else
+                {
+
+                    document.getElementById("answer_img").src ="Wrong.png";
+                    document.getElementById("userMsg").innerHTML = "Wrong Answer";
+                }
+
+                //Showing points
+                document.getElementById("point").innerHTML = score;
+                
+                //showing card
+                document.getElementsByClassName('overlay')[0].style.visibility = "visible";
+                document.getElementsByClassName('overlay')[0].style.opacity = "1";
+                
+                //clearing checkbox
+                var ele = document.getElementsByName("option");
+                for(var i=0;i<ele.length;i++)
+                    ele[i].checked = false;
+
+                setTimeout(function() { closePopUp();}, 1500);
+                
+            }
+            function closePopUp()
+            {
+                document.getElementsByClassName('overlay')[0].style.visibility ="hidden";
+                document.getElementsByClassName('overlay')[0].style.opacity = "0";
+            }
+</script>
+<!--Landing Page Starts-->
+<div id="LandingPage">
+    <section id="text">
+        <div id="msg">
+            <span>quizz</span><span>Buddy</span>
+            <div>quizz that everyones loved...</div>
+            <button onclick="startGame();">Start <img src="next.png" /></button>
+        </div>
+
+    </section>
+    <section id="start">
+        <img src="brain.png"  />
+    </section>
+</div>
+<!--Landing Page Ends-->
+
+<!--Gaming Page starts-->
+<div id="QuesPage" style="display:none;">
+<nav class="card">
+    <div id="logo">    
+        <div id="msg">
+            <span>quizz</span><span>Buddy</span>
+        </div>
+    </div>
+    <div id="points_table">
+        <span id="point"></span>/20
+    </div>
+</nav>
+<section>
+    <div id="QuestionWrapper" class="card" >
+        <div id="question"></div>
+    </div>
+    <div id="OptionGroup">
+        <div class="card optioncard">
+            <input type="radio" name="option" id="option1_col" style="display:inline;"/>
+            <div id="option1" style="display:inline;"></div>
+        </div>
+        <div class="card optioncard">
+            <input type="radio" name="option" id="option2_col" style="display:inline;"/>
+            <div id="option2" style="display:inline;"></div>
+        </div>
+        <div class="card optioncard">
+            <input type="radio" name="option" id="option3_col" style="display:inline;"/>
+            <div id="option3" style="display:inline;"></div>
+        </div>
+        <div class="card optioncard">
+            <input type="radio" name="option" id="option4_col" style="display:inline;"/>
+            <div id="option4" style="display:inline;"></div>
+        </div>
+    </div>
+</section>
+<div><button onclick='checkAnswer(x);t(++x);' class="card nextbutton">Next</button></div>
+
+</div>
+<!--Gaming Page Ends-->       
+        <script type="text/javascript">
+            document.getElementById("point").innerHTML = score;
+        </script>
+<!--pointcard start-->
+        <div id="popup1" class="overlay">
+    <div class="popup">
+        <img id="answer_img" src="wrong.png" width="100%" height="100%" />
+        <h2 id="userMsg" style="text-align: center;">Wrong Answer</h2>
+        <a class="close" href="#" onclick="closePopUp();">&times;</a>
+</div>
+    </div>
+<!--pointcard end-->
+    </body>
+</html>
